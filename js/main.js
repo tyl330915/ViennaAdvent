@@ -44,6 +44,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   createSnow();
+  initBackgroundVideo();
+
+  function initBackgroundVideo() {
+    const video = document.querySelector('.map-video');
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    const play = () => {
+      const attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(() => {});
+      }
+    };
+
+    play();
+    video.addEventListener('loadeddata', play);
+    video.addEventListener('canplay', play);
+
+    const resume = () => {
+      if (video.paused) play();
+      document.removeEventListener('pointerdown', resume);
+      document.removeEventListener('keydown', resume);
+      document.removeEventListener('touchstart', resume);
+    };
+    document.addEventListener('pointerdown', resume);
+    document.addEventListener('keydown', resume);
+    document.addEventListener('touchstart', resume, { passive: true });
+  }
 
   function createSnow() {
     const snow = document.getElementById('snow');
