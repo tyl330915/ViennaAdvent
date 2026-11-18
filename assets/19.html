@@ -1,0 +1,1068 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Vienna Christmas Crossword</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Federo&family=Josefin+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout concept: a fixed, illustrated Vienna skyline (Stephansdom, Rathaus, Riesenrad, a red tram) fills the
+   background. A sparse tile grid floats over it, and the clues sit in a frosted side panel. */
+:root {
+  --f-display: "Federo", "Georgia", serif;
+  --f-ui: "Josefin Sans", "Trebuchet MS", system-ui, sans-serif;
+
+  /* page + puzzle */
+  --bg: #DCE9F4;
+  --ink: #1A2340;
+  --ink-soft: #44527A;
+  --panel: #FFFFFFD9;
+  --panel-line: #B9C6DE;
+  --hover: #1A234014;
+  --cell: #FFFFFF;
+  --cell-ink: #1A2340;
+  --cell-line: #46557E;
+  --cell-num: #44527A;
+  --clue-active: #9A5200;
+  --board: rgba(20, 30, 64, 0.66);
+  --board-line: rgba(255, 255, 255, 0.4);
+  --cell-word: #FFE9A3;
+  --cell-cur: #F6C324;
+  --cur-ink: #1A2340;
+  --ok: #14764A;
+  --ok-bg: #D5F0E2;
+  --bad: #B3261E;
+  --bad-bg: #FBD7D3;
+  --rev: #2956A8;
+  --accent: #C8102E;
+  --accent-ink: #FFFFFF;
+
+  /* skyline */
+  --sky-top: #9CC7E6;
+  --sky-bot: #FCE6B0;
+  --glow: #FFD98A;
+  --sun: #FFF6D6;
+  --star-a: 0;
+  --cloud-a: 0.7;
+  --far: #BFCBE0;
+  --mid: #9DABC6;
+  --stone: #7E8CAA;
+  --roof: #4B5A82;
+  --roof-line: #E5B13F;
+  --dome: #6FA08B;
+  --wheel: #34415F;
+  --cabin: #C8102E;
+  --near: #56648A;
+  --road: #3C476A;
+  --river: #6FA4CF;
+  --river-deep: #3F78AA;
+  --win: #9FB1D0;
+  --win-a: 0.55;
+  --tram: #D3182F;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1026;
+    --ink: #E9EDFA;
+    --ink-soft: #A9B4D4;
+    --panel: #0F1836D9;
+    --panel-line: #2B3A6B;
+    --hover: #FFFFFF14;
+    --cell: #17224D;
+    --cell-ink: #F1F4FF;
+    --cell-line: #4C5C8C;
+    --cell-word: #51451C;
+    --cell-cur: #E8B92E;
+    --cur-ink: #0A1026;
+    --ok: #5ED19A;
+    --ok-bg: #12382A;
+    --bad: #FF8A80;
+    --bad-bg: #4A1D22;
+    --rev: #8DB4FF;
+    --accent: #C8102E;
+    --accent-ink: #FFFFFF;
+    --sky-top: #070C22;
+    --sky-bot: #2B3566;
+    --glow: #6A5A8A;
+    --sun: #EDE8CF;
+    --star-a: 0.9;
+    --cloud-a: 0;
+    --far: #1D2850;
+    --mid: #162044;
+    --stone: #101838;
+    --roof: #1B2552;
+    --roof-line: #A67C2A;
+    --dome: #1F4A4A;
+    --wheel: #E2C675;
+    --cabin: #FF7A59;
+    --near: #0B1230;
+    --road: #070C20;
+    --river: #1B2A5C;
+    --river-deep: #0D1634;
+    --win: #F5C95B;
+    --win-a: 0.9;
+    --tram: #E02B3F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1026;
+  --ink: #E9EDFA;
+  --ink-soft: #A9B4D4;
+  --panel: #0F1836D9;
+  --panel-line: #2B3A6B;
+  --hover: #FFFFFF14;
+  --cell: #17224D;
+  --cell-ink: #F1F4FF;
+  --cell-line: #4C5C8C;
+  --cell-word: #51451C;
+  --cell-cur: #E8B92E;
+  --cur-ink: #0A1026;
+  --ok: #5ED19A;
+  --ok-bg: #12382A;
+  --bad: #FF8A80;
+  --bad-bg: #4A1D22;
+  --rev: #8DB4FF;
+  --accent: #C8102E;
+  --accent-ink: #FFFFFF;
+  --sky-top: #070C22;
+  --sky-bot: #2B3566;
+  --glow: #6A5A8A;
+  --sun: #EDE8CF;
+  --star-a: 0.9;
+  --cloud-a: 0;
+  --far: #1D2850;
+  --mid: #162044;
+  --stone: #101838;
+  --roof: #1B2552;
+  --roof-line: #A67C2A;
+  --dome: #1F4A4A;
+  --wheel: #E2C675;
+  --cabin: #FF7A59;
+  --near: #0B1230;
+  --road: #070C20;
+  --river: #1B2A5C;
+  --river-deep: #0D1634;
+  --win: #F5C95B;
+  --win-a: 0.9;
+  --tram: #E02B3F;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --cell: #F1F4FF; --cell-ink: #1A2340; --cell-line: #46557E; --cell-num: #44527A;
+    --cell-word: #FFE9A3; --cell-cur: #F6C324; --cur-ink: #1A2340;
+    --ok: #14764A; --ok-bg: #CDEFDD; --bad: #B3261E; --bad-bg: #FBD7D3; --rev: #2956A8;
+    --board: rgba(3, 6, 20, 0.7); --board-line: rgba(255, 255, 255, 0.22);
+    --clue-active: #FFD54A;
+  }
+}
+:root[data-theme="dark"] {
+  --cell: #F1F4FF; --cell-ink: #1A2340; --cell-line: #46557E; --cell-num: #44527A;
+  --cell-word: #FFE9A3; --cell-cur: #F6C324; --cur-ink: #1A2340;
+  --ok: #14764A; --ok-bg: #CDEFDD; --bad: #B3261E; --bad-bg: #FBD7D3; --rev: #2956A8;
+  --board: rgba(3, 6, 20, 0.7); --board-line: rgba(255, 255, 255, 0.22);
+  --clue-active: #FFD54A;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  font-size: 16px;
+  line-height: 1.4;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+#snow { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; display: block; }
+#fireworks { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; display: block; }
+#sky {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+.page { position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; }
+
+/* hero */
+.hero { padding-block: 6px 18px; }
+.hero h1 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+.hero .sub { margin: 8px 0 0; font-size: 21px; color: var(--clue-active); max-width: 46ch; font-weight: 700; }
+.hero .meta { margin: 6px 0 0; font-size: 14px; color: var(--ink-soft); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* layout */
+.layout { display: grid; grid-template-columns: minmax(0, auto) minmax(320px, 1fr); gap: 20px; align-items: start; }
+.board { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.frost {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.bar { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.now { margin: 0; min-height: 2.8em; font-size: 17px; font-weight: 600; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.now b { font-family: var(--f-display); font-weight: 400; font-size: 1.15em; white-space: nowrap; }
+.now .len { color: var(--ink-soft); font-weight: 400; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.btn:hover { background: var(--hover); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.1); background: var(--accent); }
+.btn.armed { background: var(--cell-cur); color: var(--cur-ink); border-color: var(--cur-ink); }
+.btn:focus-visible, .clue:focus-visible { outline: 3px solid var(--cell-cur); outline-offset: 2px; }
+.status { margin: 0; font-size: 15px; color: var(--ink-soft); min-height: 1.4em; font-weight: 600; }
+.hint { margin: 0; font-size: 13.5px; color: var(--ink-soft); padding: 8px 12px; border-radius: 10px; }
+
+/* grid */
+.gridwrap { overflow-x: auto; max-width: 100%; width: fit-content; padding: 10px; background: var(--board); border: 1px solid var(--board-line); border-radius: 14px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); box-shadow: 0 6px 22px rgba(10, 16, 40, 0.28); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cs));
+  grid-auto-rows: var(--cs);
+  gap: 2px;
+  width: max-content;
+  padding: 2px;
+  --cs: 30px;
+}
+.cell {
+  position: relative;
+  border: 1px solid var(--cell-line);
+  border-radius: 3px;
+  background: var(--cell);
+  color: var(--cell-ink);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  display: grid;
+  place-items: center;
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: calc(var(--cs) * 0.56);
+  line-height: 1;
+  touch-action: manipulation;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+.cell.blank { visibility: hidden; pointer-events: none; }
+.cell .n {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: max(8px, calc(var(--cs) * 0.3));
+  font-weight: 700;
+  color: var(--cell-num);
+  line-height: 1;
+  pointer-events: none;
+}
+.cell .l { pointer-events: none; }
+.cell.inword { background: var(--cell-word); }
+.cell.ok { background: var(--ok-bg); color: var(--ok); }
+.cell.bad { background: var(--bad-bg); color: var(--bad); }
+.cell.rev { color: var(--rev); }
+.cell.cur { background: var(--cell-cur); color: var(--cur-ink); border-color: var(--cur-ink); }
+.cell.cur .n { color: var(--cur-ink); }
+
+/* clues */
+.clues { padding: 14px; position: sticky; top: 16px; display: flex; flex-direction: column; min-width: 0; }
+.lists { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.list { min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+.list h2 {
+  margin: 0 0 6px;
+  padding-bottom: 6px;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: 22px;
+  border-bottom: 1.5px solid var(--panel-line);
+}
+.scroll { overflow-y: auto; max-height: 300px; margin: 0; padding: 0; list-style: none; }
+.clue {
+  display: grid;
+  grid-template-columns: 2.1em 1fr auto;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 15.5px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.clue:hover { background: var(--hover); }
+.clue .num { font-weight: 700; }
+.clue .len { color: var(--ink-soft); font-size: 0.88em; white-space: nowrap; }
+.clue.cross { box-shadow: inset 0 0 0 1.5px var(--cell-cur); }
+.clue.active .text, .clue.active .num { color: var(--clue-active); font-weight: 700; }
+.clue.filled .text { color: var(--ink-soft); }
+.clue.filled .text::after { content: " \2713"; color: var(--ok); font-weight: 700; }
+
+.kb { position: fixed; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; font-size: 16px; pointer-events: none; }
+
+@media (max-width: 1099px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .clues { position: static; max-height: none; }
+  .scroll { max-height: 420px; }
+}
+@media (max-width: 639px) {
+  .lists { grid-template-columns: minmax(0, 1fr); }
+  .scroll { max-height: 320px; }
+  .hero .sub { font-size: 18px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: background 0.15s ease, filter 0.15s ease; }
+}
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<div class="page">
+  <header class="hero">
+    <h1>Vienna Christmas Crossword</h1>
+    <p class="sub">Click on the crossword or the clue list to select a word</p>
+  </header>
+
+  <div class="layout">
+    <section class="board" aria-label="Crossword grid">
+      <div class="bar frost">
+        <p class="now" id="now" aria-live="polite"></p>
+        <div class="tools">
+          <button type="button" class="btn primary" id="btn-check">Check Answers</button>
+          <button type="button" class="btn" id="btn-reveal">Reveal Answers</button>
+          <button type="button" class="btn" id="btn-clear">Clear Grid</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="gridwrap"><div class="grid" id="grid" role="group" aria-label="Crossword squares"></div></div>
+      <p class="hint frost">Arrow keys move between squares. Tab jumps to the next clue, Enter flips direction, Esc leaves the grid.</p>
+    </section>
+
+    <aside class="clues frost" aria-label="Clues">
+      <div class="lists">
+        <section class="list" aria-labelledby="h-across">
+          <h2 id="h-across">Across</h2>
+          <ol class="scroll" id="list-A"></ol>
+        </section>
+        <section class="list" aria-labelledby="h-down">
+          <h2 id="h-down">Down</h2>
+          <ol class="scroll" id="list-D"></ol>
+        </section>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<input id="kb" class="kb" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Type your answer">
+<canvas id="fireworks" aria-hidden="true"></canvas>
+<script>
+/* Fireworks, launched by the crossword when it is solved */
+(function () {
+  var cv = document.getElementById('fireworks'), ctx = cv.getContext && cv.getContext('2d');
+  if (!ctx) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var W = 0, H = 0, dpr = 1, rockets = [], sparks = [], raf = 0, last = 0, endAt = 0, nextAt = 0;
+  var COLORS = ['#FF4D5E', '#FFC83D', '#4DB8FF', '#5CE08A', '#FF7AD9', '#FFFFFF', '#FF9A3D', '#B58CFF'];
+  function fit() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = document.documentElement.clientWidth; H = window.innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  }
+  function launch() {
+    var x = W * (0.08 + Math.random() * 0.84);
+    rockets.push({ x: x, y: H + 10, ty: H * (0.1 + Math.random() * 0.4), vy: -(420 + Math.random() * 160), c: COLORS[(Math.random() * COLORS.length) | 0] });
+  }
+  function burst(x, y, c) {
+    var n = 70 + ((Math.random() * 40) | 0), c2 = COLORS[(Math.random() * COLORS.length) | 0], sp = 90 + Math.random() * 110;
+    for (var i = 0; i < n; i++) {
+      var a = Math.PI * 2 * i / n + Math.random() * 0.15, v = sp * (0.55 + Math.random() * 0.45);
+      sparks.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 0, max: 1.3 + Math.random() * 0.9, c: i % 3 ? c : c2 });
+    }
+  }
+  function frame(ts) {
+    raf = requestAnimationFrame(frame);
+    var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    if (ts < endAt && ts > nextAt) { launch(); if (Math.random() < 0.4) launch(); nextAt = ts + 350 + Math.random() * 450; }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var i, r, s;
+    for (i = rockets.length - 1; i >= 0; i--) {
+      r = rockets[i]; r.y += r.vy * dt; r.vy += 160 * dt;
+      ctx.fillStyle = '#FFF3C4'; ctx.shadowColor = r.c; ctx.shadowBlur = 8;
+      ctx.beginPath(); ctx.arc(r.x, r.y, 2, 0, 6.2832); ctx.fill();
+      if (r.y <= r.ty || r.vy > -40) { burst(r.x, r.y, r.c); rockets.splice(i, 1); }
+    }
+    for (i = sparks.length - 1; i >= 0; i--) {
+      s = sparks[i]; s.life += dt;
+      if (s.life > s.max) { sparks.splice(i, 1); continue; }
+      s.vx *= 0.985; s.vy = s.vy * 0.985 + 70 * dt;
+      s.x += s.vx * dt; s.y += s.vy * dt;
+      ctx.globalAlpha = Math.max(0, 1 - s.life / s.max);
+      ctx.fillStyle = s.c; ctx.shadowColor = s.c; ctx.shadowBlur = 6;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 2, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+    if (ts > endAt && !rockets.length && !sparks.length) {
+      cancelAnimationFrame(raf); raf = 0;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+    }
+  }
+  window.__fireworks = function () {
+    if (reduce.matches) return;
+    fit();
+    var now = performance.now();
+    endAt = now + 12000; nextAt = now;
+    if (!raf) { last = now; raf = requestAnimationFrame(frame); }
+  };
+  window.addEventListener('resize', fit);
+  fit();
+})();
+</script>
+<canvas id="snow" aria-hidden="true"></canvas>
+<script>
+/* Gentle falling snow */
+(function () {
+  var cv = document.getElementById('snow'), ctx = cv.getContext && cv.getContext('2d');
+  if (!ctx) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var W = 0, H = 0, dpr = 1, flakes = [], raf = 0, last = 0, edge = 'rgba(80,100,150,0.5)';
+  function seed() {
+    var n = Math.max(40, Math.min(110, Math.round(W * H / 14000)));
+    flakes = [];
+    for (var i = 0; i < n; i++) {
+      flakes.push({ x: Math.random() * W, y: Math.random() * H, r: 1.2 + Math.random() * 2.6,
+        v: 16 + Math.random() * 26, ph: Math.random() * 6.28, sw: 8 + Math.random() * 18, f: 0.3 + Math.random() * 0.6 });
+    }
+  }
+  function fit() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = document.documentElement.clientWidth; H = window.innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    try { edge = getComputedStyle(document.documentElement).getPropertyValue('--panel-line').trim() || edge; } catch (e) {}
+    seed(); draw(0);
+  }
+  function draw(t) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.shadowColor = edge; ctx.shadowBlur = 3;
+    for (var i = 0; i < flakes.length; i++) {
+      var f = flakes[i], x = f.x + Math.sin(t * f.f + f.ph) * f.sw;
+      ctx.globalAlpha = 0.55 + f.r / 8;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath(); ctx.arc(x, f.y, f.r, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  var clock = 0;
+  function loop(ts) {
+    raf = requestAnimationFrame(loop);
+    var dt = Math.min((ts - last) / 1000, 0.1); last = ts; clock += dt;
+    for (var i = 0; i < flakes.length; i++) {
+      var f = flakes[i]; f.y += f.v * dt;
+      if (f.y > H + 6) { f.y = -6; f.x = Math.random() * W; }
+    }
+    draw(clock);
+  }
+  function start() {
+    cancelAnimationFrame(raf);
+    if (reduce.matches) { draw(0); return; }
+    last = performance.now(); raf = requestAnimationFrame(loop);
+  }
+  fit(); start();
+  window.addEventListener('resize', fit);
+  if (reduce.addEventListener) reduce.addEventListener('change', start);
+  var again = function () { fit(); };
+  new MutationObserver(again).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  var dm = window.matchMedia('(prefers-color-scheme: dark)');
+  if (dm.addEventListener) dm.addEventListener('change', again);
+})();
+</script>
+
+<script>
+/* ---------- Skyline ---------- */
+(function () {
+  var cv = document.getElementById('sky');
+  var ctx = cv.getContext && cv.getContext('2d');
+  if (!ctx) return;
+  var SW = 1440, SH = 520, G = 480;
+  var dpr = 1, cw = 0, ch = 0, s = 1, tx = 0, ty = 0, T = null;
+  var back = null, front = null, rot = 0, raf = 0, lastT = 0, lastH = 0;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function rng(seed) { var a = seed >>> 0; return function () { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; }
+  function rgba(hex, a) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(hex, 16);
+    return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+  function readTokens() {
+    var cs = getComputedStyle(document.documentElement);
+    function g(n) { return cs.getPropertyValue(n).trim(); }
+    return {
+      skyTop: g('--sky-top'), skyBot: g('--sky-bot'), glow: g('--glow'), sun: g('--sun'),
+      starA: parseFloat(g('--star-a')) || 0, cloudA: parseFloat(g('--cloud-a')) || 0,
+      far: g('--far'), mid: g('--mid'), stone: g('--stone'), roof: g('--roof'), roofLine: g('--roof-line'),
+      dome: g('--dome'), wheel: g('--wheel'), cabin: g('--cabin'), near: g('--near'), road: g('--road'),
+      river: g('--river'), riverDeep: g('--river-deep'), win: g('--win'), winA: parseFloat(g('--win-a')) || 0.5,
+      tram: g('--tram')
+    };
+  }
+  function newLayer() { var c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; return c; }
+  function sceneT(g) { g.setTransform(dpr * s, 0, 0, dpr * s, dpr * tx, dpr * ty); }
+
+  function poly(g, pts, color) {
+    g.fillStyle = color; g.beginPath(); g.moveTo(pts[0][0], pts[0][1]);
+    for (var i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+    g.closePath(); g.fill();
+  }
+  function slit(g, x, y, w, h) {
+    g.fillStyle = T.win; g.globalAlpha = T.winA;
+    g.beginPath(); g.moveTo(x, y + h); g.lineTo(x, y + w / 2); g.arc(x + w / 2, y + w / 2, w / 2, Math.PI, 0); g.lineTo(x + w, y + h);
+    g.closePath(); g.fill(); g.globalAlpha = 1;
+  }
+  function spire(g, cx, yb, hw, tip, color) {
+    var H = yb - tip;
+    g.fillStyle = color; g.beginPath(); g.moveTo(cx - hw, yb);
+    g.quadraticCurveTo(cx - hw * 0.35, yb - H * 0.55, cx, tip);
+    g.quadraticCurveTo(cx + hw * 0.35, yb - H * 0.55, cx + hw, yb);
+    g.closePath(); g.fill();
+  }
+  function blocks(g, x0, x1, base, hMin, hMax, color, seed, winCol, winA) {
+    var r = rng(seed), x = x0;
+    while (x < x1) {
+      var w = 20 + r() * 38, h = hMin + r() * (hMax - hMin), t = r();
+      g.fillStyle = color;
+      g.fillRect(x, base - h, w, h);
+      if (t < 0.4) {
+        g.beginPath(); g.moveTo(x - 2, base - h); g.lineTo(x + w / 2, base - h - w * 0.32); g.lineTo(x + w + 2, base - h); g.closePath(); g.fill();
+      } else if (t < 0.7) {
+        g.beginPath(); g.moveTo(x - 1, base - h); g.lineTo(x + 4, base - h - 9); g.lineTo(x + w - 4, base - h - 9); g.lineTo(x + w + 1, base - h); g.closePath(); g.fill();
+      }
+      if (r() < 0.35) g.fillRect(x + w * 0.25, base - h - 16, 4, 16);
+      if (winCol) {
+        g.fillStyle = winCol; g.globalAlpha = winA;
+        for (var yy = base - h + 8; yy < base - 6; yy += 11) {
+          for (var xx = x + 5; xx < x + w - 5; xx += 9) { if (r() < 0.5) g.fillRect(xx, yy, 3, 5); }
+        }
+        g.globalAlpha = 1;
+      }
+      x += w + (r() < 0.3 ? 3 : 0);
+    }
+  }
+
+  function karlskirche(g) {
+    var cx = 215;
+    g.fillStyle = T.stone;
+    g.fillRect(95, G - 70, 240, 70);
+    for (var i = 0; i < 2; i++) {
+      var x = i ? 305 : 125;
+      g.fillStyle = T.stone; g.fillRect(x - 7, G - 150, 14, 82);
+      g.fillStyle = T.dome; g.beginPath(); g.arc(x, G - 150, 10, Math.PI, 0); g.fill(); g.fillRect(x - 1.5, G - 168, 3, 8);
+    }
+    g.fillStyle = T.stone; g.fillRect(170, G - 98, 90, 30);
+    poly(g, [[164, G - 98], [215, G - 120], [266, G - 98]], T.stone);
+    g.fillStyle = T.stone; g.fillRect(185, G - 140, 60, 24);
+    g.fillStyle = T.dome; g.beginPath(); g.ellipse(cx, G - 140, 32, 46, 0, Math.PI, Math.PI * 2); g.fill();
+    g.fillRect(cx - 4, G - 196, 8, 12); poly(g, [[cx - 6, G - 196], [cx, G - 208], [cx + 6, G - 196]], T.dome);
+    for (var k = 0; k < 5; k++) slit(g, 182 + k * 18, G - 60, 7, 22);
+  }
+  function stephansdom(g) {
+    var stone = T.stone;
+    g.fillStyle = stone; g.fillRect(400, G - 120, 240, 120);
+    var rp = [[392, G - 120], [426, G - 215], [614, G - 215], [648, G - 120]];
+    poly(g, rp, T.roof);
+    g.save(); g.beginPath();
+    rp.forEach(function (p, i) { if (i) g.lineTo(p[0], p[1]); else g.moveTo(p[0], p[1]); });
+    g.closePath(); g.clip();
+    g.strokeStyle = T.roofLine; g.lineWidth = 1.5;
+    for (var k = 0; k < 9; k++) {
+      var y = G - 212 + k * 11; g.beginPath();
+      for (var x = 388, j = 0; x <= 652; x += 11, j++) { var yy = y + (j % 2 ? 5 : 0); if (j === 0) g.moveTo(x, yy); else g.lineTo(x, yy); }
+      g.stroke();
+    }
+    g.restore();
+    for (var wx = 412; wx < 632; wx += 22) slit(g, wx, G - 95, 7, 26);
+
+    var cx = 455;
+    g.fillStyle = stone;
+    g.fillRect(cx - 23, G - 150, 46, 150);
+    g.fillRect(cx - 19, G - 200, 38, 52);
+    g.fillRect(cx - 14, G - 235, 28, 37);
+    poly(g, [[cx - 27, G - 150], [cx - 23, G - 172], [cx - 19, G - 150]], stone);
+    poly(g, [[cx + 19, G - 150], [cx + 23, G - 172], [cx + 27, G - 150]], stone);
+    slit(g, cx - 4, G - 120, 8, 34); slit(g, cx - 4, G - 188, 8, 30); slit(g, cx - 3, G - 228, 6, 22);
+    spire(g, cx, G - 235, 14, G - 340, stone);
+    g.fillStyle = stone;
+    for (var i = 1; i <= 8; i++) {
+      var t = i / 9, yy2 = G - 235 - 105 * t, hw = 14 * Math.pow(1 - t, 1.5);
+      poly(g, [[cx - hw, yy2], [cx - hw - 3.5, yy2 - 3], [cx - hw, yy2 - 6]], stone);
+      poly(g, [[cx + hw, yy2], [cx + hw + 3.5, yy2 - 3], [cx + hw, yy2 - 6]], stone);
+    }
+    g.fillRect(cx - 0.8, G - 354, 1.6, 14); g.fillRect(cx - 4, G - 350, 8, 1.6);
+
+    var nx = 622;
+    g.fillStyle = stone; g.fillRect(nx - 23, G - 175, 46, 175); g.fillRect(nx - 17, G - 200, 34, 28);
+    g.fillStyle = T.roof; g.beginPath(); g.moveTo(nx - 19, G - 198);
+    g.bezierCurveTo(nx - 34, G - 222, nx - 10, G - 236, nx, G - 268);
+    g.bezierCurveTo(nx + 10, G - 236, nx + 34, G - 222, nx + 19, G - 198);
+    g.closePath(); g.fill();
+    g.fillRect(nx - 0.8, G - 284, 1.6, 18); g.fillRect(nx - 3.5, G - 279, 7, 1.5);
+    slit(g, nx - 4, G - 150, 8, 30);
+  }
+  function rathaus(g) {
+    var cx = 770;
+    g.fillStyle = T.stone; g.fillRect(690, G - 100, 160, 100);
+    for (var x = 700; x < 842; x += 14) { slit(g, x, G - 84, 7, 22); slit(g, x, G - 50, 7, 22); }
+    [694, 846].forEach(function (x) {
+      g.fillStyle = T.stone; g.fillRect(x - 8, G - 128, 16, 30);
+      poly(g, [[x - 10, G - 128], [x, G - 158], [x + 10, G - 128]], T.roof);
+    });
+    g.fillStyle = T.stone;
+    g.fillRect(cx - 20, G - 190, 40, 92); g.fillRect(cx - 25, G - 200, 50, 10); g.fillRect(cx - 14, G - 228, 28, 30);
+    [-24, 24].forEach(function (dx) { poly(g, [[cx + dx - 4, G - 200], [cx + dx, G - 222], [cx + dx + 4, G - 200]], T.stone); });
+    spire(g, cx, G - 228, 16, G - 292, T.roof);
+    g.fillStyle = T.roof; g.fillRect(cx - 0.7, G - 304, 1.4, 14);
+    g.beginPath(); g.arc(cx, G - 306, 2.4, 0, Math.PI * 2); g.fill();
+    g.fillStyle = T.sun; g.beginPath(); g.arc(cx, G - 168, 8, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = T.stone; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(cx, G - 168); g.lineTo(cx, G - 174); g.moveTo(cx, G - 168); g.lineTo(cx + 4, G - 166); g.stroke();
+    slit(g, cx - 3, G - 216, 6, 12);
+  }
+  function hofburg(g) {
+    var cx = 1190;
+    g.fillStyle = T.stone; g.fillRect(1110, G - 78, 160, 78); g.fillRect(1160, G - 112, 60, 36);
+    for (var x = 1120; x < 1262; x += 15) slit(g, x, G - 62, 7, 24);
+    g.fillStyle = T.dome; g.beginPath(); g.ellipse(cx, G - 112, 38, 50, 0, Math.PI, Math.PI * 2); g.fill();
+    g.fillRect(cx - 4, G - 174, 8, 14); poly(g, [[cx - 6, G - 174], [cx, G - 186], [cx + 6, G - 174]], T.dome);
+  }
+
+  function drawSky(g) {
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var gr = g.createLinearGradient(0, 0, 0, ch);
+    gr.addColorStop(0, T.skyTop); gr.addColorStop(1, T.skyBot);
+    g.fillStyle = gr; g.fillRect(0, 0, cw, ch);
+    var rg = g.createRadialGradient(cw * 0.5, ch, 10, cw * 0.5, ch, Math.max(cw, ch) * 0.75);
+    rg.addColorStop(0, rgba(T.glow, 0.6)); rg.addColorStop(1, rgba(T.glow, 0));
+    g.fillStyle = rg; g.fillRect(0, 0, cw, ch);
+    if (T.starA > 0.01) {
+      var r = rng(5);
+      for (var i = 0; i < 110; i++) {
+        var x = r() * cw, y = r() * ch * 0.55, sz = 0.6 + r() * 1.1, a = T.starA * (0.4 + r() * 0.6);
+        g.fillStyle = 'rgba(255,255,255,' + a + ')'; g.fillRect(x, y, sz, sz);
+      }
+    }
+    var sx = cw * 0.82, sy = ch * 0.2;
+    var sg = g.createRadialGradient(sx, sy, 4, sx, sy, 130);
+    sg.addColorStop(0, rgba(T.sun, 0.55)); sg.addColorStop(1, rgba(T.sun, 0));
+    g.fillStyle = sg; g.fillRect(sx - 140, sy - 140, 280, 280);
+    g.fillStyle = T.sun; g.beginPath(); g.arc(sx, sy, 26, 0, Math.PI * 2); g.fill();
+    if (T.cloudA > 0.01) {
+      g.fillStyle = 'rgba(255,255,255,' + T.cloudA + ')';
+      [[0.14, 0.2, 1], [0.52, 0.12, 0.8], [0.36, 0.34, 0.7], [0.9, 0.4, 0.9]].forEach(function (c) {
+        var x = cw * c[0], y = ch * c[1], k = c[2] * Math.min(1.2, Math.max(0.6, cw / 1200));
+        [[0, 0, 60], [48, 8, 44], [-46, 10, 40], [18, -14, 38]].forEach(function (p) {
+          g.beginPath(); g.ellipse(x + p[0] * k, y + p[1] * k, p[2] * k, p[2] * k * 0.5, 0, 0, Math.PI * 2); g.fill();
+        });
+      });
+    }
+  }
+  function drawBack(g) {
+    drawSky(g);
+    sceneT(g);
+    blocks(g, -60, 1500, G - 34, 50, 118, T.far, 11, null, 0);
+    blocks(g, -60, 1500, G, 38, 92, T.mid, 23, T.win, T.winA);
+    karlskirche(g); stephansdom(g); rathaus(g); hofburg(g);
+  }
+  function drawFront(g) {
+    sceneT(g);
+    blocks(g, -60, 1500, G + 8, 14, 30, T.near, 41, T.win, T.winA * 0.8);
+    g.fillStyle = T.road; g.fillRect(-60, G + 8, 1560, 12);
+    g.fillStyle = T.near; g.fillRect(-60, G + 17, 1560, 1.5);
+    g.strokeStyle = T.near; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(-60, G - 28); g.lineTo(1500, G - 28); g.stroke();
+    var tx0 = 540;
+    g.fillStyle = T.tram; g.fillRect(tx0, G - 10, 112, 24);
+    g.fillStyle = '#F3EFE4'; g.fillRect(tx0, G + 2, 112, 3);
+    g.fillStyle = T.win; g.globalAlpha = Math.max(T.winA, 0.7);
+    for (var i = 0; i < 7; i++) g.fillRect(tx0 + 6 + i * 15, G - 6, 11, 7);
+    g.globalAlpha = 1;
+    g.fillStyle = T.road;
+    g.beginPath(); g.arc(tx0 + 18, G + 15, 3.5, 0, Math.PI * 2); g.arc(tx0 + 94, G + 15, 3.5, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = T.near; g.lineWidth = 1.4;
+    g.beginPath(); g.moveTo(tx0 + 62, G - 10); g.lineTo(tx0 + 72, G - 28); g.stroke();
+    var rv = g.createLinearGradient(0, G + 20, 0, SH + 40);
+    rv.addColorStop(0, T.river); rv.addColorStop(1, T.riverDeep);
+    g.fillStyle = rv; g.fillRect(-60, G + 20, 1560, SH - G + 60);
+    var r = rng(77);
+    g.strokeStyle = rgba(T.sun, 0.28); g.lineWidth = 1.2;
+    for (var j = 0; j < 40; j++) {
+      var x = r() * 1500 - 30, y = G + 26 + r() * 30, w = 14 + r() * 40;
+      g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + w / 2, y - 3, x + w, y); g.stroke();
+    }
+  }
+  function drawWheel(g) {
+    var cx = 965, cy = G - 205, R = 108, i, a;
+    g.strokeStyle = T.wheel; g.lineCap = 'round';
+    g.lineWidth = 4; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx - 62, G + 4); g.moveTo(cx, cy); g.lineTo(cx + 62, G + 4); g.stroke();
+    g.lineWidth = 2.2; g.beginPath(); g.moveTo(cx - 9, cy + 6); g.lineTo(cx - 52, G + 4); g.moveTo(cx + 9, cy + 6); g.lineTo(cx + 52, G + 4); g.stroke();
+    g.lineWidth = 1.6;
+    [0.35, 0.6, 0.82].forEach(function (f) {
+      var y = cy + (G + 4 - cy) * f, hw = 62 * f; g.beginPath(); g.moveTo(cx - hw, y); g.lineTo(cx + hw, y); g.stroke();
+    });
+    g.lineWidth = 3; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.stroke();
+    g.lineWidth = 1.6; g.beginPath(); g.arc(cx, cy, R - 9, 0, Math.PI * 2); g.stroke();
+    g.beginPath(); g.arc(cx, cy, R * 0.62, 0, Math.PI * 2); g.stroke();
+    g.lineWidth = 1.2; g.beginPath();
+    for (i = 0; i < 24; i++) { a = rot + i * Math.PI * 2 / 24; g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R); }
+    g.stroke();
+    g.fillStyle = T.wheel; g.beginPath(); g.arc(cx, cy, 7, 0, Math.PI * 2); g.fill();
+    for (i = 0; i < 15; i++) {
+      a = rot + i * Math.PI * 2 / 15;
+      var x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
+      g.fillStyle = T.cabin; g.fillRect(x - 7, y + 1, 14, 15);
+      poly(g, [[x - 8, y + 1], [x, y - 5], [x + 8, y + 1]], T.cabin);
+      g.fillStyle = T.win; g.globalAlpha = Math.max(T.winA, 0.7); g.fillRect(x - 4, y + 5, 8, 5); g.globalAlpha = 1;
+    }
+  }
+  function compose() {
+    if (!back) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(back, 0, 0);
+    sceneT(ctx); drawWheel(ctx);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(front, 0, 0);
+  }
+  function rebuild(force) {
+    var w = document.documentElement.clientWidth, h = window.innerHeight;
+    if (!force && back && w === cw && Math.abs(h + 140 - ch) < 140) return;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    cw = w; ch = h + 140; lastH = h;
+    cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
+    cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
+    s = Math.max(cw / SW, Math.min((ch - 140) * 0.5 / 340, cw / 700));
+    tx = (cw - SW * s) / 2; ty = ch - SH * s;
+    T = readTokens();
+    back = newLayer(); front = newLayer();
+    drawBack(back.getContext('2d')); drawFront(front.getContext('2d'));
+    compose();
+  }
+  function loop(t) {
+    raf = requestAnimationFrame(loop);
+    if (t - lastT < 120) return;
+    var dt = Math.min(t - lastT, 500); lastT = t;
+    rot += dt / 1000 * (Math.PI * 2 / 220);
+    compose();
+  }
+  function start() {
+    cancelAnimationFrame(raf);
+    lastT = performance.now();
+    if (!reduce.matches) raf = requestAnimationFrame(loop);
+  }
+  rebuild(true); start();
+  window.addEventListener('resize', function () { rebuild(false); });
+  var dark = window.matchMedia('(prefers-color-scheme: dark)');
+  var again = function () { rebuild(true); };
+  if (dark.addEventListener) dark.addEventListener('change', again); else if (dark.addListener) dark.addListener(again);
+  if (reduce.addEventListener) reduce.addEventListener('change', start);
+  new MutationObserver(again).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+<script>
+/* ---------- Crossword ---------- */
+(function () {
+  var P = {"rows":26,"cols":26,"grid":[".......G..................",".......R......O...........","....STRAUSS.S.P..T........",".......B..C.T.EMPRESS..P..","S.DANUBE..H.R.R..A.C...R..","P......N..N.U.A..M.H.N.A..","E..C....U.I.D..A..MOZART..","RATHAUS.BUTTERFLY..N.S.E..","L..O....A.Z.L..B...B.C.R..",".S.C..MAHLER.FREUD.R.H....",".I.O....N.L.B..R...U.M....",".S.L.H.S.C..E..T...N.A....","FIGARO.E.A..LIPIZZANER....","...T.F.C.T..V..N.....K....","...E.BEETHOVEN.A.....T....",".W...U.S.E..D.C.H.F.......","SACHER.S.D.LEMONADE......K",".L...G.I.R..R.F.B.R....I.L",".T.....O.A..E.F.S.R....M.I",".Z.....N.L....E.B.I....P.M","..............E.U.SCHUBERT","............H...R......R..","...........SAUSAGE.....I..","............Y.......PALACE","............D..........L..","............N............."],"words":[{"ans":"STRAUSS","r":2,"c":4,"dir":"A","len":7,"num":3,"clue":"Can't escape this composer in Vienna."},{"ans":"EMPRESS","r":3,"c":14,"dir":"A","len":7,"num":7,"clue":"Elizabeth's title"},{"ans":"DANUBE","r":4,"c":2,"dir":"A","len":6,"num":11,"clue":"More brown than blue, as it flows."},{"ans":"MOZART","r":6,"c":18,"dir":"A","len":6,"num":16,"clue":"Wild youth musician"},{"ans":"RATHAUS","r":7,"c":0,"dir":"A","len":7,"num":17,"clue":"Seems like vermin should live here, but it's actually bureaucrats. Oh...."},{"ans":"BUTTERFLY","r":7,"c":8,"dir":"A","len":9,"num":18,"clue":"Is a schmetterling just a little schmetter? And would it melt in your mouth?"},{"ans":"MAHLER","r":9,"c":6,"dir":"A","len":6,"num":20,"clue":"Composer and former Opera director"},{"ans":"FREUD","r":9,"c":13,"dir":"A","len":5,"num":21,"clue":"Shrink who lived here"},{"ans":"FIGARO","r":12,"c":0,"dir":"A","len":6,"num":26,"clue":"Mozart's famous opera"},{"ans":"LIPIZZANER","r":12,"c":12,"dir":"A","len":10,"num":27,"clue":"Famous Spanish Riding School horses"},{"ans":"BEETHOVEN","r":14,"c":5,"dir":"A","len":9,"num":28,"clue":"Deaf composer buried in Vienna"},{"ans":"SACHER","r":16,"c":0,"dir":"A","len":6,"num":33,"clue":"Famous chocolate cake"},{"ans":"LEMONADE","r":16,"c":11,"dir":"A","len":8,"num":34,"clue":"Popular café refreshment"},{"ans":"SCHUBERT","r":20,"c":18,"dir":"A","len":8,"num":37,"clue":"Viennese-born composer"},{"ans":"SAUSAGE","r":22,"c":11,"dir":"A","len":7,"num":39,"clue":"Hit the kiosk after a night drinking and try to eat one of these. Good luck!"},{"ans":"PALACE","r":23,"c":20,"dir":"A","len":6,"num":40,"clue":"Schönbrunn or the Hofburg"},{"ans":"GRABEN","r":0,"c":7,"dir":"D","len":6,"num":1,"clue":"Famous shopping street, where you can grab stuff"},{"ans":"OPERA","r":1,"c":14,"dir":"D","len":5,"num":2,"clue":"The fat lady sings here"},{"ans":"SCHNITZEL","r":2,"c":10,"dir":"D","len":9,"num":4,"clue":"Classic Viennese dish"},{"ans":"STRUDEL","r":2,"c":12,"dir":"D","len":7,"num":5,"clue":"Traditional apple pastry"},{"ans":"TRAM","r":2,"c":17,"dir":"D","len":4,"num":6,"clue":"Who wants a bus when you have one of these?"},{"ans":"SCHONBRUNN","r":3,"c":19,"dir":"D","len":10,"num":8,"clue":"Famous summer palace"},{"ans":"PRATER","r":3,"c":23,"dir":"D","len":6,"num":9,"clue":"Famous park and amusement ground"},{"ans":"SPERL","r":4,"c":0,"dir":"D","len":5,"num":10,"clue":"The strudel is good, but the lemonade is fantastic!"},{"ans":"NASCHMARKT","r":5,"c":21,"dir":"D","len":10,"num":12,"clue":"Vienna's best-known food market"},{"ans":"CHOCOLATE","r":6,"c":3,"dir":"D","len":9,"num":13,"clue":"Viennese confectionery"},{"ans":"UBAHN","r":6,"c":8,"dir":"D","len":5,"num":14,"clue":"Underground railway"},{"ans":"ALBERTINA","r":6,"c":15,"dir":"D","len":9,"num":15,"clue":"A gallery named after Victoria's husband and a hairdresser?"},{"ans":"SISI","r":9,"c":1,"dir":"D","len":4,"num":19,"clue":"Empress Elisabeth's nickname"},{"ans":"BELVEDERE","r":10,"c":12,"dir":"D","len":9,"num":22,"clue":"Palace and art gallery"},{"ans":"HOFBURG","r":11,"c":5,"dir":"D","len":7,"num":23,"clue":"Former imperial palace named after the star of \"Knight Rider\""},{"ans":"SECESSION","r":11,"c":7,"dir":"D","len":9,"num":24,"clue":"Famous art movement and building"},{"ans":"CATHEDRAL","r":11,"c":9,"dir":"D","len":9,"num":25,"clue":"Steve's place"},{"ans":"WALTZ","r":15,"c":1,"dir":"D","len":5,"num":29,"clue":"The Viennese dance."},{"ans":"COFFEE","r":15,"c":14,"dir":"D","len":6,"num":30,"clue":"Lots of places to drink this in town."},{"ans":"HABSBURG","r":15,"c":16,"dir":"D","len":8,"num":31,"clue":"Famous chins"},{"ans":"FERRIS","r":15,"c":18,"dir":"D","len":6,"num":32,"clue":"Rotating Gondolas"},{"ans":"KLIMT","r":16,"c":25,"dir":"D","len":5,"num":35,"clue":"Hard to avoid his kisses all over the place."},{"ans":"IMPERIAL","r":17,"c":23,"dir":"D","len":8,"num":36,"clue":"What the emperors were."},{"ans":"HAYDN","r":21,"c":12,"dir":"D","len":5,"num":38,"clue":"Austrian classical composer in seclusion here."}]};
+  var R = P.rows, C = P.cols;
+  var sol = [];
+  P.grid.forEach(function (row) { for (var i = 0; i < row.length; i++) sol.push(row[i] === '.' ? '' : row[i]); });
+  var words = P.words.map(function (w, i) {
+    w.i = i; w.cells = [];
+    for (var k = 0; k < w.len; k++) w.cells.push(w.dir === 'A' ? w.r * C + w.c + k : (w.r + k) * C + w.c);
+    return w;
+  });
+  var wordAt = { A: new Array(R * C).fill(-1), D: new Array(R * C).fill(-1) };
+  words.forEach(function (w) { w.cells.forEach(function (ix) { wordAt[w.dir][ix] = w.i; }); });
+  var numAt = {};
+  words.forEach(function (w) { numAt[w.r * C + w.c] = w.num; });
+  var totalLetters = sol.filter(Boolean).length;
+  var nAcross = words.filter(function (w) { return w.dir === 'A'; }).length;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var gridEl = $('grid'), nowEl = $('now'), statusEl = $('status'), kb = $('kb');
+  gridEl.style.setProperty('--cols', C);
+
+  var letters = new Array(R * C).fill('');
+  var marks = new Array(R * C).fill('');
+  var cells = new Array(R * C);
+  var clueBtns = new Array(words.length);
+  var STORE = 'vienna-crossword-v2-' + R + 'x' + C;
+  var celebrated = false, usedReveal = false;
+
+  /* build grid */
+  for (var ix = 0; ix < R * C; ix++) {
+    var el = document.createElement('div');
+    el.className = 'cell' + (sol[ix] ? '' : ' blank');
+    if (sol[ix]) {
+      el.dataset.ix = ix;
+      if (numAt[ix]) { var n = document.createElement('span'); n.className = 'n'; n.textContent = numAt[ix]; el.appendChild(n); }
+      var l = document.createElement('span'); l.className = 'l'; el.appendChild(l);
+      cells[ix] = { el: el, l: l };
+    }
+    gridEl.appendChild(el);
+  }
+
+  /* build clue lists */
+  words.forEach(function (w) {
+    var li = document.createElement('li');
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'clue';
+    var num = document.createElement('span'); num.className = 'num'; num.textContent = w.num;
+    var tx = document.createElement('span'); tx.className = 'text'; tx.textContent = w.clue;
+    var len = document.createElement('span'); len.className = 'len'; len.textContent = '(' + w.len + ')';
+    b.appendChild(num); b.appendChild(tx); b.appendChild(len);
+    b.addEventListener('click', function () {
+      var first = w.cells.filter(function (c) { return !letters[c]; })[0];
+      select(first === undefined ? w.cells[0] : first, w.dir);
+    });
+    li.appendChild(b); $('list-' + w.dir).appendChild(li);
+    clueBtns[w.i] = b;
+  });
+
+  /* state */
+  var cur = -1, dir = 'A', shown = [];
+
+  function wordOf(ix, d) { var i = wordAt[d][ix]; return i < 0 ? null : words[i]; }
+
+  function paint(opts) {
+    shown.forEach(function (c) { cells[c].el.classList.remove('inword', 'cur'); });
+    shown = [];
+    clueBtns.forEach(function (b) { b.classList.remove('active', 'cross'); });
+    var w = wordOf(cur, dir);
+    w.cells.forEach(function (c) { cells[c].el.classList.add('inword'); shown.push(c); });
+    cells[cur].el.classList.add('cur');
+    var cb = clueBtns[w.i]; cb.classList.add('active');
+    var other = wordOf(cur, dir === 'A' ? 'D' : 'A');
+    if (other) clueBtns[other.i].classList.add('cross');
+    nowEl.textContent = '';
+    var b = document.createElement('b'); b.textContent = w.num + ' ' + (w.dir === 'A' ? 'Across' : 'Down');
+    var t = document.createElement('span'); t.textContent = w.clue;
+    var ln = document.createElement('span'); ln.className = 'len'; ln.textContent = '(' + w.len + ')';
+    nowEl.appendChild(b); nowEl.appendChild(t); nowEl.appendChild(ln);
+    inList(cb);
+    if (other) inList(clueBtns[other.i], true);
+    if (opts && opts.focus === false) return;
+    try { kb.focus({ preventScroll: true }); } catch (e) { kb.focus(); }
+    resetKb();
+    if (!opts || opts.scroll !== false) cells[cur].el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+  function inList(btn, soft) {
+    var box = btn.closest('.scroll'); if (!box) return;
+    var b = btn.getBoundingClientRect(), r = box.getBoundingClientRect();
+    if (b.top < r.top) box.scrollTop -= (r.top - b.top) + 8;
+    else if (b.bottom > r.bottom) box.scrollTop += (b.bottom - r.bottom) + 8;
+  }
+  function select(ix, d, opts) {
+    if (wordAt[d][ix] < 0) d = d === 'A' ? 'D' : 'A';
+    cur = ix; dir = d; paint(opts);
+  }
+
+  cells.forEach(function (c, ix) {
+    if (!c) return;
+    c.el.addEventListener('click', function () {
+      if (ix === cur) {
+        var o = dir === 'A' ? 'D' : 'A';
+        select(ix, wordAt[o][ix] >= 0 ? o : dir);
+      } else select(ix, dir);
+    });
+  });
+
+  function setStatus(msg) { statusEl.textContent = msg; }
+  function filledCount() { var n = 0; for (var i = 0; i < letters.length; i++) if (letters[i]) n++; return n; }
+  function progressMsg() { return filledCount() + ' of ' + totalLetters + ' squares filled.'; }
+
+  function updateCell(ix) {
+    var c = cells[ix]; c.l.textContent = letters[ix];
+    c.el.classList.toggle('ok', marks[ix] === 'ok');
+    c.el.classList.toggle('bad', marks[ix] === 'bad');
+    c.el.classList.toggle('rev', marks[ix] === 'rev');
+  }
+  function refreshClues() {
+    words.forEach(function (w) {
+      var full = w.cells.every(function (c) { return !!letters[c]; });
+      clueBtns[w.i].classList.toggle('filled', full);
+    });
+  }
+  function save() {
+    try { localStorage.setItem(STORE, letters.map(function (x) { return x || ' '; }).join('')); } catch (e) {}
+  }
+  function solved() {
+    if (usedReveal) return false;
+    for (var i = 0; i < sol.length; i++) if (sol[i] && letters[i] !== sol[i]) return false;
+    return true;
+  }
+  function celebrate() {
+    if (!solved()) { celebrated = false; return; }
+    if (celebrated) return;
+    celebrated = true;
+    setStatus('Solved! All ' + words.length + ' words are correct. Merry Christmas!');
+    if (window.__fireworks) window.__fireworks();
+  }
+  function afterChange() { refreshClues(); save(); setStatus(progressMsg()); celebrate(); }
+
+  function setLetter(ix, ch) { letters[ix] = ch; marks[ix] = ''; updateCell(ix); afterChange(); }
+  function typeLetter(ch) {
+    if (cur < 0) return;
+    setLetter(cur, ch);
+    var w = wordOf(cur, dir), k = w.cells.indexOf(cur);
+    if (k < w.cells.length - 1) select(w.cells[k + 1], dir);
+  }
+  function backspace() {
+    if (cur < 0) return;
+    if (letters[cur]) { setLetter(cur, ''); return; }
+    var w = wordOf(cur, dir), k = w.cells.indexOf(cur);
+    if (k > 0) { var p = w.cells[k - 1]; setLetter(p, ''); select(p, dir); }
+  }
+  function move(dr, dc) {
+    if (cur < 0) return;
+    var axis = dr ? 'D' : 'A';
+    if (axis !== dir && wordAt[axis][cur] >= 0) { select(cur, axis); return; }
+    var r = Math.floor(cur / C) + dr, c = cur % C + dc;
+    while (r >= 0 && r < R && c >= 0 && c < C) {
+      var ix = r * C + c;
+      if (sol[ix]) { select(ix, axis); return; }
+      r += dr; c += dc;
+    }
+  }
+  function stepClue(delta) {
+    var w = wordOf(cur, dir), i = (w.i + delta + words.length) % words.length, t = words[i];
+    var first = t.cells.filter(function (c) { return !letters[c]; })[0];
+    select(first === undefined ? t.cells[0] : first, t.dir);
+  }
+
+  var SENT = '​';
+  function resetKb() { kb.value = SENT; try { kb.setSelectionRange(1, 1); } catch (e) {} }
+  kb.addEventListener('keydown', function (e) {
+    if (e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key, handled = true;
+    if (/^[a-zA-Z]$/.test(k)) typeLetter(k.toUpperCase());
+    else if (k === 'Backspace') backspace();
+    else if (k === 'Delete') { if (cur >= 0) setLetter(cur, ''); }
+    else if (k === 'ArrowLeft') move(0, -1);
+    else if (k === 'ArrowRight') move(0, 1);
+    else if (k === 'ArrowUp') move(-1, 0);
+    else if (k === 'ArrowDown') move(1, 0);
+    else if (k === 'Tab') stepClue(e.shiftKey ? -1 : 1);
+    else if (k === 'Enter' || k === ' ') { var o = dir === 'A' ? 'D' : 'A'; if (wordAt[o][cur] >= 0) select(cur, o); }
+    else if (k === 'Home') select(wordOf(cur, dir).cells[0], dir);
+    else if (k === 'End') { var wc = wordOf(cur, dir).cells; select(wc[wc.length - 1], dir); }
+    else if (k === 'Escape') { kb.blur(); }
+    else handled = false;
+    if (handled) e.preventDefault();
+  });
+  kb.addEventListener('input', function (e) {
+    var v = kb.value;
+    if (e.inputType === 'deleteContentBackward' || v.length === 0) backspace();
+    else {
+      var m = v.replace(/[^a-zA-Z]/g, '');
+      if (m) typeLetter(m.slice(-1).toUpperCase());
+    }
+    resetKb();
+  });
+
+  /* buttons */
+  function twoStep(btn, armedLabel, needs, action) {
+    var label = btn.textContent, armed = false, timer = 0;
+    function disarm() { armed = false; btn.classList.remove('armed'); btn.textContent = label; }
+    btn.addEventListener('click', function () {
+      if (armed) { clearTimeout(timer); disarm(); action(); return; }
+      if (!needs()) { action(); return; }
+      armed = true; btn.classList.add('armed'); btn.textContent = armedLabel;
+      setStatus('Press the button again to confirm.');
+      timer = setTimeout(function () { disarm(); setStatus(progressMsg()); }, 3500);
+    });
+  }
+  $('btn-check').addEventListener('click', function () {
+    var ok = 0, bad = 0, empty = 0;
+    for (var i = 0; i < sol.length; i++) {
+      if (!sol[i]) continue;
+      if (!letters[i]) { empty++; marks[i] = ''; }
+      else if (letters[i] === sol[i]) { ok++; marks[i] = 'ok'; }
+      else { bad++; marks[i] = 'bad'; }
+      updateCell(i);
+    }
+    if (ok + bad === 0) setStatus('Type a few letters first, then check.');
+    else if (bad === 0 && empty === 0) setStatus('Solved! All ' + words.length + ' words are correct.');
+    else setStatus(ok + ' correct, ' + bad + ' incorrect, ' + empty + ' empty.');
+    celebrate();
+  });
+  twoStep($('btn-reveal'), 'Press again to reveal', function () { return true; }, function () {
+    for (var i = 0; i < sol.length; i++) {
+      if (!sol[i]) continue;
+      var wasRight = letters[i] === sol[i];
+      letters[i] = sol[i]; marks[i] = wasRight ? '' : 'rev'; updateCell(i);
+    }
+    usedReveal = true; celebrated = false;
+    refreshClues(); save(); setStatus('All answers revealed.');
+  });
+  twoStep($('btn-clear'), 'Press again to clear', function () { return filledCount() > 0; }, function () {
+    for (var i = 0; i < sol.length; i++) { if (!sol[i]) continue; letters[i] = ''; marks[i] = ''; updateCell(i); }
+    usedReveal = false; celebrated = false;
+    refreshClues(); save(); setStatus('Grid cleared.');
+  });
+
+  /* sizing */
+  var wide = window.matchMedia('(min-width: 1100px)');
+  function size() {
+    var page = document.querySelector('.page'), w = page.clientWidth;
+    var avail = wide.matches ? w - 20 - 340 - 22 : w - 22;
+    var cs = Math.floor((avail - 4 - (C - 1) * 2) / C);
+    cs = Math.max(22, Math.min(34, cs));
+    gridEl.style.setProperty('--cs', cs + 'px');
+  }
+  window.addEventListener('resize', size);
+  size();
+
+  /* restore saved progress */
+  try {
+    var saved = localStorage.getItem(STORE);
+    if (saved && saved.length === letters.length) {
+      for (var j = 0; j < saved.length; j++) {
+        if (sol[j] && /[A-Z]/.test(saved[j])) { letters[j] = saved[j]; updateCell(j); }
+      }
+    }
+  } catch (e) {}
+  refreshClues();
+  setStatus(progressMsg());
+  celebrated = solved();
+  select(words[0].cells[0], words[0].dir, { focus: false, scroll: false });
+})();
+</script>
+
+</body></html>

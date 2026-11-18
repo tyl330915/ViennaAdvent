@@ -1,0 +1,26 @@
+### Project: Vienna Advent Calendar
+
+### Overview: 
+A single HTML page, called index.html. The CSS and JavaScript should be in folders with those names.  This will be a clickable image of a cartoonish animated map of Vienna. Put the number 1 to 24 in various places around the city, near distinctive places. Numbner 25 should be put on the cathedral in the center. Animate gentle snow falling. 
+
+## Background:
+	# Use "background.gif"
+	# Overlay the number 1 to 24, spread out across the city in random order.
+	# Animate a light snow falling across the scene. 
+
+
+## Actions:
+When a number is clicked, it will start a video file, an image, or a game, which should expand to 95% of the full screen, and have a clickable X for a close button. The assets will be in the "assets" folder, and be numbered corresponding to the date number. For instance, the asset which should be displayed on day 1 (the first of December) will have the prefix 1.
+
+Highlight the number on the map for a specific day of the month. For instance, if it is the 13th of the month, the number 13 should be surrounded by a pulsing light to give it prominence. 
+
+##Functions:
+	For development, all of the numbers will be accessible, and display their modal. In production, only the current day and the preceeding days will function. 
+
+To begin, code the above in JavaScript and HTML, so that we can begin to tweak it as necessary. 
+
+
+
+
+
+

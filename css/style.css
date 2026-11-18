@@ -1,0 +1,213 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #2b1d12; }
+
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#vienna {
+  width: 100%;
+  height: 100%;
+  max-width: 1920px;
+  max-height: 1080px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.map-video { z-index: 1; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#snow { z-index: 2; }
+#numbers { z-index: 3; }
+
+/* Door numbers */
+.door {
+  cursor: pointer;
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.25s ease;
+}
+.door.enabled { opacity: 1; pointer-events: auto; }
+.door:focus { outline: none; }
+
+.door-inner {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+.door.enabled:hover .door-inner { transform: scale(1.12); }
+.door.enabled:active .door-inner { transform: scale(0.96); }
+
+.door-disc {
+  fill: #b5121b;
+  stroke: #f6d88a;
+  stroke-width: 3;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
+}
+.door text {
+  fill: #fff6dd;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 26px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+.door:focus-visible .door-disc { stroke: #ffffff; stroke-width: 4; }
+
+.door[data-day="25"] .door-disc {
+  fill: #0d6b45;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 7px rgba(255, 216, 138, 0.85));
+}
+
+/* Pulsing highlight for today's door */
+.pulse-ring {
+  fill: none;
+  stroke: #ffdf8a;
+  stroke-width: 0;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.door.today .pulse-ring { animation: door-pulse 2s ease-out infinite; }
+@keyframes door-pulse {
+  0%   { transform: scale(1); opacity: 0.95; stroke-width: 4; }
+  70%  { transform: scale(1.9); opacity: 0; stroke-width: 2; }
+  100% { transform: scale(1.9); opacity: 0; stroke-width: 0; }
+}
+
+/* Snow falling */
+#snow circle {
+  fill: #ffffff;
+  animation: snowfall 12s linear infinite;
+}
+@keyframes snowfall {
+  0%   { transform: translateY(-80px) translateX(0); opacity: 0; }
+  8%   { opacity: 0.9; }
+  92%  { opacity: 0.9; }
+  100% { transform: translateY(1160px) translateX(30px); opacity: 0; }
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(15, 8, 4, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5vh 2.5vw;
+}
+.modal.hidden { display: none; }
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 248, 231, 0.85);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff8e7;
+  font-size: 38px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 60;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.modal-close:hover { background: #b5121b; transform: scale(1.05); }
+
+.modal-content {
+  width: 95vw;
+  height: 95vh;
+  max-width: 1728px;
+  max-height: 972px;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+}
+.modal-content img,
+.modal-content video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+.modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+  display: block;
+}
+
+.modal-message {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #fff6dd;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.modal-message.coming-soon {
+  flex-direction: column;
+  gap: 0.7rem;
+  background: radial-gradient(circle at 50% 42%, rgba(13, 107, 69, 0.55), rgba(0, 0, 0, 0.92));
+}
+
+.coming-soon-day {
+  font-size: 1rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #f6d88a;
+}
+
+.coming-soon-title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  color: #fff6dd;
+  text-shadow: 0 0 22px rgba(246, 216, 138, 0.55);
+}
+
+.coming-soon-note {
+  max-width: 32ch;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  line-height: 1.5;
+  color: rgba(255, 246, 221, 0.8);
+}
