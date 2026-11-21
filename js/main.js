@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const unlocked = day <= maxDay;
 
     door.classList.toggle('enabled', unlocked);
-    door.classList.toggle('today', day === today);
+    door.classList.toggle('today', unlocked && day === today);
     door.setAttribute('aria-disabled', String(!unlocked));
     door.setAttribute('tabindex', unlocked ? '0' : '-1');
 
