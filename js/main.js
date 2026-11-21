@@ -34,13 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     door.classList.toggle('enabled', unlocked);
     door.classList.toggle('today', unlocked && day === today);
-    door.setAttribute('aria-disabled', String(!unlocked));
-    door.setAttribute('tabindex', unlocked ? '0' : '-1');
+    door.setAttribute('tabindex', '0');
 
     if (unlocked) {
       door.setAttribute('aria-label', 'Open day ' + day);
     } else {
-      door.removeAttribute('aria-label');
+      door.setAttribute('aria-label', 'Day ' + day + ' \u2014 not yet available');
     }
 
     door.addEventListener('click', (event) => {
