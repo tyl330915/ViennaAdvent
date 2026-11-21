@@ -1,11 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const DEV_MODE = true;
   const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
   const videoTypes = ['mp4', 'webm'];
   const gameDays = new Set([19]);
 
   const today = new Date().getDate();
-  const maxDay = DEV_MODE ? 25 : Math.min(today, 25);
+  const maxDay = computeMaxDay();
+
+  function computeMaxDay() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === '1') return 25;
+
+    const targetYear = 2026;
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+
+    if (year < targetYear) return 0;
+    if (year > targetYear) return 25;
+    if (month !== 12) return 0;
+    return Math.min(now.getDate(), 25);
+  }
   const doors = Array.from(document.querySelectorAll('#numbers .door'));
 
   const modal = document.getElementById('modal');
