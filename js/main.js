@@ -45,8 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     door.addEventListener('click', (event) => {
       event.stopPropagation();
-      if (!door.classList.contains('enabled')) return;
-      openDay(day);
+      if (door.classList.contains('enabled')) {
+        openDay(day);
+      } else {
+        showWrappedMessage();
+      }
     });
 
     door.addEventListener('keydown', (event) => {
@@ -112,6 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       snow.appendChild(flake);
     }
+  }
+
+  function showWrappedMessage() {
+    requestId += 1;
+
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    showMessage('Your present is still being wrapped' + '\u2026' + ' please be patient!');
   }
 
   function openDay(day) {
